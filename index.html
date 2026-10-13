@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffd6e7">
+<meta name="robots" content="noindex, nofollow">
+<title>Une petite question 💗</title>
+<meta property="og:title" content="J'ai une petite question à te poser… 💌">
+<meta property="og:description" content="Ouvre pour voir 🥹💗">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💗</text></svg>">
+<style>
+:root {
+  --bg1: #ffd6e7;
+  --bg2: #fff0f7;
+  --bg3: #ffe0ef;
+  --pink: #ff5c9d;
+  --pink-dark: #e0407f;
+  --text: #7a2048;
+  --card: rgba(255, 255, 255, .78);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+  background-attachment: fixed;
+  font-family: ui-rounded, "SF Pro Rounded", "Nunito", "Varela Round", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+#bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.float-heart {
+  position: absolute; bottom: -10vh; opacity: 0;
+  animation: rise var(--d) linear var(--delay) infinite;
+}
+@keyframes rise {
+  0%   { transform: translate3d(0, 0, 0) rotate(-8deg); opacity: 0; }
+  10%  { opacity: .75; }
+  50%  { transform: translate3d(var(--sway), -55vh, 0) rotate(8deg); }
+  100% { transform: translate3d(calc(var(--sway) * -1), -115vh, 0) rotate(-8deg); opacity: 0; }
+}
+.star {
+  position: absolute; opacity: .2;
+  animation: twinkle var(--d) ease-in-out var(--delay) infinite;
+}
+@keyframes twinkle {
+  0%, 100% { transform: scale(.6) rotate(0); opacity: .15; }
+  50%      { transform: scale(1.2) rotate(25deg); opacity: .95; }
+}
+
+.screen {
+  position: relative; z-index: 1;
+  display: none;
+  min-height: 100vh; min-height: 100dvh;
+  align-items: center; justify-content: center;
+  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+           max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.screen.active { display: flex; animation: screenIn .5s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(24px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+.card {
+  width: 100%; max-width: 440px;
+  background: var(--card);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, .9);
+  border-radius: 34px;
+  padding: 30px 22px 26px;
+  text-align: center;
+  box-shadow: 0 14px 40px rgba(255, 92, 157, .22);
+}
+h1 { font-size: 1.55rem; line-height: 1.3; margin: 0 0 14px; font-weight: 800; }
+p  { font-size: 1.12rem; line-height: 1.5; margin: 0 0 16px; }
+.big-emoji { font-size: 3rem; display: inline-block; animation: bob 2.2s ease-in-out infinite; }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(4deg); } }
+
+.btn {
+  font: inherit; font-weight: 800; font-size: 1.12rem; letter-spacing: .02em;
+  border: 0; border-radius: 999px; padding: 15px 28px; min-height: 52px;
+  cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .2s;
+}
+.btn:active { transform: scale(.9); }
+.btn.pop { animation: pop .4s ease; }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.18) rotate(-3deg); } 100% { transform: scale(1); } }
+.btn-yes {
+  color: #fff; background: linear-gradient(135deg, #ff7eb3, var(--pink));
+  box-shadow: 0 6px 0 var(--pink-dark), 0 12px 24px rgba(255, 92, 157, .4);
+}
+.btn-yes:active { box-shadow: 0 2px 0 var(--pink-dark); }
+.btn-no {
+  color: var(--text); background: #fff; border: 2px solid #ffb6d1;
+  box-shadow: 0 5px 0 #ffcfe0;
+}
+.btn[disabled] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.btn-wa { color: #fff; background: linear-gradient(135deg, #3ddc84, #1fb85a); box-shadow: 0 6px 0 #14873f, 0 12px 24px rgba(31, 184, 90, .35); }
+.btn-ghost { background: transparent; color: var(--text); text-decoration: underline; box-shadow: none; font-weight: 700; }
+
+.buttons {
+  display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap;
+  min-height: 70px; margin-top: 8px;
+}
+#yes { transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+#no.runaway {
+  position: fixed; z-index: 60; margin: 0;
+  transition: left .35s cubic-bezier(.34, 1.56, .64, 1), top .35s cubic-bezier(.34, 1.56, .64, 1), transform .15s;
+}
+#taunt { min-height: 2.6em; margin: 14px 0 0; font-weight: 800; color: var(--pink-dark); font-size: 1.08rem; }
+#taunt.pop { animation: pop .4s ease; }
+
+.ideas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 20px; }
+.idea {
+  font: inherit; color: var(--text); text-align: center; cursor: pointer;
+  background: #fff; border: 3px solid transparent; border-radius: 24px;
+  padding: 10px 10px 14px; box-shadow: 0 6px 16px rgba(255, 92, 157, .16);
+  touch-action: manipulation; -webkit-appearance: none; appearance: none;
+  transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), border-color .2s, box-shadow .2s, background .2s;
+}
+.idea:active { transform: scale(.95); }
+.idea svg { width: 100%; height: auto; display: block; border-radius: 14px; margin-bottom: 8px; }
+.idea .t { display: block; font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+.idea .d { display: block; font-size: .8rem; line-height: 1.35; opacity: .85; }
+.idea.selected {
+  border-color: var(--pink); background: #fff5fa; transform: scale(1.04);
+  box-shadow: 0 0 0 5px rgba(255, 92, 157, .2), 0 10px 24px rgba(255, 92, 157, .35);
+  animation: wiggle .5s ease;
+}
+@keyframes wiggle { 0%,100% { rotate: 0deg; } 25% { rotate: -3deg; } 75% { rotate: 3deg; } }
+@media (max-width: 360px) { .ideas { grid-template-columns: 1fr; } }
+
+.recap-pick { width: 150px; margin: 6px auto 12px; position: relative; }
+.recap-pick svg { width: 100%; border-radius: 18px; box-shadow: 0 8px 20px rgba(255, 92, 157, .3); }
+.recap-pick .orbit { position: absolute; font-size: 1.5rem; animation: bob 2s ease-in-out infinite; }
+.heartbeat { display: inline-block; font-size: 2.6rem; animation: beat 1.1s ease-in-out infinite; }
+@keyframes beat { 0%,100% { transform: scale(1); } 15% { transform: scale(1.3); } 30% { transform: scale(1); } 45% { transform: scale(1.2); } }
+#status { font-size: .95rem; min-height: 1.4em; margin-top: 14px; opacity: .9; }
+.small { font-size: .9rem; opacity: .85; }
+
+.confetti {
+  position: fixed; top: -8vh; z-index: 100; pointer-events: none;
+  animation: fall var(--d) cubic-bezier(.3, .6, .5, 1) forwards;
+}
+@keyframes fall { to { transform: translate3d(var(--dx), 118vh, 0) rotate(var(--r)); opacity: .9; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .float-heart, .star, .big-emoji, .heartbeat, .orbit { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="bg" aria-hidden="true"></div>
+
+<main class="screen active" id="s-home">
+  <div class="card">
+    <div class="big-emoji">💌</div>
+    <h1>heyyy toi 💗<br>j’ai une petite question à te poser…</h1>
+    <p>est-ce que tu veux venir en date avec moi samedi ? 🥹💌</p>
+    <div class="buttons" id="buttons">
+      <button class="btn btn-yes" id="yes" type="button">OUIIII 💗</button>
+      <button class="btn btn-no" id="no" type="button">NON 🙄</button>
+    </div>
+    <div id="taunt" aria-live="polite"></div>
+  </div>
+</main>
+
+<section class="screen" id="s-ideas">
+  <div class="card">
+    <h1>OMMMMG TU AS DIT OUI ? 😭💗<br>bon, choisis notre date alors !!</h1>
+    <div class="ideas" id="ideas" role="radiogroup" aria-label="Idées de date"></div>
+    <button class="btn btn-yes" id="go" type="button" disabled>C’EST PARTI 💘</button>
+  </div>
+</section>
+
+<section class="screen" id="s-recap">
+  <div class="card">
+    <div class="recap-pick" id="recap-pick"></div>
+    <div class="heartbeat">💗</div>
+    <h1 id="recap-title"></h1>
+    <p>excellent choix monsieur 😌💗<br>alors, on confirme notre date de samedi ?</p>
+    <button class="btn btn-yes" id="confirm" type="button">OUI, ON CONFIRME 💗</button>
+    <div><button class="btn btn-ghost" id="back" type="button">← je veux changer</button></div>
+  </div>
+</section>
+
+<section class="screen" id="s-done">
+  <div class="card">
+    <div class="big-emoji">🥳</div>
+    <h1>AAAAAH trop bien 🥹💞<br>il ne reste plus qu’à se mettre d’accord sur l’heure !!</h1>
+    <p class="small">appuie ici pour me prévenir sur WhatsApp : ça ouvre la discussion avec le message déjà écrit, il te reste juste à appuyer sur « envoyer » 📲</p>
+    <a class="btn btn-wa" id="wa" href="#" target="_blank" rel="noopener">M’envoyer ma réponse 💬</a>
+    <div id="status" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="screen" id="s-no">
+  <div class="card">
+    <div class="big-emoji">🥹</div>
+    <h1>ok, pas de souci 💗</h1>
+    <p>merci d’avoir été honnête, c’est vraiment pas grave. et si jamais tu changes d’avis, je suis là 😌</p>
+    <button class="btn btn-yes" id="retry" type="button">en fait… j’ai changé d’avis 💞</button>
+  </div>
+</section>
+
+<script>
+const CONFIG = {
+  whatsappNumber: "33761469160",
+  formEndpoint: "",
+  maxDodges: 7,
+  taunts: [
+    "EH POURQUOI TU VEUX DIRE NON 😭",
+    "AHAHAH RATÉ 🤭",
+    "le bouton est timide mdrrr 💨",
+    "essaie encoreee 😈💗",
+    "hého, réfléchis bien 🥺",
+    "il a peur de toi 😳",
+    "trop lent 🐢💗"
+  ],
+  tauntSettled: "bon… ok, il s’est fatigué 🥺 (tu peux cliquer si tu veux vraiment)",
+  ideas: [
+    { id: "balade", emoji: "🌅", title: "Balade & papotage",
+      desc: "On se balade tranquillement, on parle de tout et de rien et on profite d’être ensemble.",
+      wa: "la balade & papotage",
+      svg: '<svg viewBox="0 0 120 80"><rect width="120" height="80" fill="#ffe3c2"/><circle cx="85" cy="30" r="14" fill="#ffb347"/><path d="M0 80 Q30 38 65 62 T120 52 V80Z" fill="#9be3a8"/><path d="M0 80 Q40 60 120 80Z" fill="#6fcf86"/><path d="M52 80 q8 -12 22 -14" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>' },
+    { id: "gouter", emoji: "🍰", title: "Goûter gourmand",
+      desc: "Un petit goûter, quelque chose de bon à partager et plein de discussions.",
+      wa: "le goûter gourmand",
+      svg: '<svg viewBox="0 0 120 80"><rect width="120" height="80" fill="#ffe1ea"/><ellipse cx="60" cy="62" rx="40" ry="9" fill="#fff"/><path d="M32 58 L88 58 L88 40 Q60 28 32 40Z" fill="#ffc2d6"/><path d="M32 40 Q60 28 88 40 L88 46 Q60 34 32 46Z" fill="#fff"/><circle cx="60" cy="27" r="6" fill="#ff4d7d"/><path d="M60 21 q4 -8 9 -9" stroke="#5aa86a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>' },
+    { id: "film", emoji: "🎬", title: "Film & chill",
+      desc: "Un film, des snacks, une ambiance cosy et un moment tranquille tous les deux.",
+      wa: "le film & chill",
+      svg: '<svg viewBox="0 0 120 80"><rect width="120" height="80" fill="#e6dcff"/><rect x="20" y="14" width="80" height="46" rx="8" fill="#5b4b8a"/><path d="M54 26 L74 37 L54 48Z" fill="#fff"/><rect x="44" y="64" width="32" height="5" rx="2.5" fill="#b9a8f0"/></svg>' },
+    { id: "surprise", emoji: "🎀", title: "Date surprise",
+      desc: "Je prépare une petite surprise et tu n’as plus qu’à venir avec ton plus beau sourire.",
+      wa: "la date surprise",
+      svg: '<svg viewBox="0 0 120 80"><rect width="120" height="80" fill="#fff0c9"/><rect x="34" y="34" width="52" height="34" rx="5" fill="#ff7aa8"/><rect x="28" y="28" width="64" height="12" rx="5" fill="#ff5c9d"/><rect x="56" y="28" width="8" height="40" fill="#fff"/><path d="M60 28 Q40 6 36 20 Q40 30 60 28Z M60 28 Q80 6 84 20 Q80 30 60 28Z" fill="#fff"/></svg>' }
+  ]
+};
+
+const $ = (id) => document.getElementById(id);
+const HEARTS = ["💗", "💖", "💕", "💘", "🩷", "💞"];
+const rand = (a, b) => a + Math.random() * (b - a);
+
+(function buildBackground() {
+  const bg = $("bg");
+  const small = window.matchMedia("(max-width: 600px)").matches;
+  const nHearts = small ? 12 : 20, nStars = small ? 16 : 28;
+  for (let i = 0; i < nHearts; i++) {
+    const s = document.createElement("span");
+    s.className = "float-heart";
+    s.textContent = HEARTS[i % HEARTS.length];
+    s.style.left = rand(0, 98) + "%";
+    s.style.fontSize = rand(16, 34) + "px";
+    s.style.setProperty("--d", rand(9, 17) + "s");
+    s.style.setProperty("--delay", -rand(0, 16) + "s");
+    s.style.setProperty("--sway", rand(-40, 40) + "px");
+    bg.appendChild(s);
+  }
+  for (let i = 0; i < nStars; i++) {
+    const s = document.createElement("span");
+    s.className = "star";
+    s.textContent = i % 3 === 0 ? "⭐" : "✨";
+    s.style.left = rand(0, 96) + "%";
+    s.style.top = rand(0, 96) + "%";
+    s.style.fontSize = rand(10, 22) + "px";
+    s.style.setProperty("--d", rand(2.5, 5) + "s");
+    s.style.setProperty("--delay", -rand(0, 5) + "s");
+    bg.appendChild(s);
+  }
+})();
+
+function confetti(count = 45) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) count = 12;
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement("span");
+    c.className = "confetti";
+    c.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+    c.style.left = rand(0, 100) + "vw";
+    c.style.fontSize = rand(18, 36) + "px";
+    c.style.setProperty("--d", rand(2.2, 4) + "s");
+    c.style.setProperty("--dx", rand(-80, 80) + "px");
+    c.style.setProperty("--r", rand(-360, 360) + "deg");
+    c.style.animationDelay = rand(0, .6) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".btn");
+  if (!b) return;
+  b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
+});
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+
+const yes = $("yes"), no = $("no"), taunt = $("taunt");
+let dodges = 0, settled = false, lastDodge = 0, lastTaunt = -1;
+
+function say(text) {
+  taunt.textContent = text;
+  taunt.classList.remove("pop"); void taunt.offsetWidth; taunt.classList.add("pop");
+}
+function viewport() {
+  const v = window.visualViewport;
+  return { w: v ? v.width : window.innerWidth, h: v ? v.height : window.innerHeight };
+}
+function dodge() {
+  const now = Date.now();
+  if (settled || now - lastDodge < 280) return;
+  lastDodge = now;
+
+  const nw = no.offsetWidth, nh = no.offsetHeight;
+  if (!no.classList.contains("runaway")) {
+    const r = no.getBoundingClientRect();
+    no.style.left = r.left + "px"; no.style.top = r.top + "px";
+    no.classList.add("runaway");
+    void no.offsetWidth;
+  }
+  dodges++;
+
+  const { w, h } = viewport(), m = 14;
+  const maxX = Math.max(m, w - nw - m), maxY = Math.max(m, h - nh - m);
+  const cur = no.getBoundingClientRect(), yr = yes.getBoundingClientRect();
+  let x = m, y = m;
+  for (let i = 0; i < 40; i++) {
+    x = rand(m, maxX); y = rand(m, maxY);
+    const far = Math.hypot(x - cur.left, y - cur.top) > Math.min(140, w / 2.5);
+    const clearOfYes = x + nw < yr.left - 12 || x > yr.right + 12 || y + nh < yr.top - 12 || y > yr.bottom + 12;
+    if (far && clearOfYes) break;
+  }
+  no.style.left = x + "px"; no.style.top = y + "px";
+
+  yes.style.transform = "scale(" + Math.min(1 + dodges * 0.06, 1.4) + ")";
+
+  if (dodges >= CONFIG.maxDodges) {
+    settled = true;
+    no.textContent = "bon… non 🥺";
+    say(CONFIG.tauntSettled);
+  } else {
+    let i; do { i = Math.floor(Math.random() * CONFIG.taunts.length); } while (i === lastTaunt && CONFIG.taunts.length > 1);
+    lastTaunt = i; say(CONFIG.taunts[i]);
+  }
+}
+
+no.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") dodge(); });
+no.addEventListener("pointerdown", (e) => { if (!settled) { e.preventDefault(); dodge(); } });
+no.addEventListener("touchstart", (e) => { if (!settled) { e.preventDefault(); dodge(); } }, { passive: false });
+no.addEventListener("click", () => {
+  if (!settled || Date.now() - lastDodge < 450) return;
+  show("s-no");
+});
+window.addEventListener("resize", () => {
+  if (!no.classList.contains("runaway")) return;
+  const { w, h } = viewport(), r = no.getBoundingClientRect();
+  no.style.left = Math.max(14, Math.min(r.left, w - r.width - 14)) + "px";
+  no.style.top = Math.max(14, Math.min(r.top, h - r.height - 14)) + "px";
+});
+
+$("retry").addEventListener("click", () => {
+  dodges = 0; settled = false; lastTaunt = -1;
+  no.classList.remove("runaway"); no.removeAttribute("style");
+  no.textContent = "NON 🙄"; yes.style.transform = ""; taunt.textContent = "";
+  show("s-home");
+});
+
+yes.addEventListener("click", () => { confetti(50); show("s-ideas"); });
+
+let chosen = null;
+const ideasBox = $("ideas"), go = $("go");
+CONFIG.ideas.forEach((idea) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "idea";
+  b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false");
+  b.innerHTML = idea.svg +
+    '<span class="t">' + idea.emoji + " " + idea.title + "</span>" +
+    '<span class="d">' + idea.desc + "</span>";
+  b.addEventListener("click", () => {
+    chosen = idea;
+    ideasBox.querySelectorAll(".idea").forEach((el) => {
+      el.classList.remove("selected"); el.setAttribute("aria-checked", "false");
+    });
+    b.classList.add("selected"); b.setAttribute("aria-checked", "true");
+    go.disabled = false;
+  });
+  ideasBox.appendChild(b);
+});
+
+go.addEventListener("click", () => {
+  if (!chosen) return;
+  $("recap-pick").innerHTML = chosen.svg +
+    '<span class="orbit" style="left:-14px;top:-10px">💗</span>' +
+    '<span class="orbit" style="right:-14px;top:20px;animation-delay:.4s">✨</span>' +
+    '<span class="orbit" style="left:-6px;bottom:-12px;animation-delay:.8s">💕</span>' +
+    '<span class="orbit" style="right:-10px;bottom:-8px;animation-delay:1.2s">🌸</span>';
+  $("recap-title").textContent = chosen.emoji + " " + chosen.title;
+  confetti(30); show("s-recap");
+});
+$("back").addEventListener("click", () => show("s-ideas"));
+
+function waMessage() {
+  return "J’ai choisi " + chosen.wa + " " + chosen.emoji + " et je confirme notre date de samedi 💗";
+}
+$("confirm").addEventListener("click", async (e) => {
+  if (!chosen) return;
+  e.currentTarget.disabled = true;
+  const msg = waMessage();
+
+  $("wa").href = "https://wa.me/" + CONFIG.whatsappNumber + "?text=" + encodeURIComponent(msg);
+
+  confetti(70); show("s-done");
+  setTimeout(() => confetti(40), 900);
+
+  const status = $("status");
+  if (!CONFIG.formEndpoint) { status.textContent = ""; return; }
+  status.textContent = "⏳ envoi en cours…";
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 10000);
+    const res = await fetch(CONFIG.formEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ idee: chosen.title, confirme: "oui", message: msg }),
+      signal: ctrl.signal
+    });
+    clearTimeout(timer);
+    status.textContent = res.ok
+      ? "✅ ta réponse a bien été enregistrée"
+      : "⚠️ l’envoi automatique n’a pas marché, utilise le bouton WhatsApp ci-dessus 💬";
+  } catch (err) {
+    status.textContent = "⚠️ l’envoi automatique n’a pas marché, utilise le bouton WhatsApp ci-dessus 💬";
+  }
+});
+</script>
+</body>
+</html>
